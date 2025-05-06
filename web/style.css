@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+    @apply overflow-hidden bg-white text-slate-800;
+}
+
+body.login {
+    @apply w-full h-full min-h-screen flex items-center justify-center;
+}
+
+.login > div {
+    @apply font-mono flex flex-col items-center space-y-8 min-h-full w-full max-w-sm mx-auto my-4 px-4 py-10 text-slate-800;
+}
+
+.login input {
+    @apply w-full px-3 py-2 rounded-md border border-slate-500 shadow focus:outline-none;
+}
+
+.login button {
+    @apply block w-full px-4 py-2 border border-slate-500 bg-slate-700 text-white rounded-md;
+}
+
+#app {
+    @apply text-slate-800;
+}
