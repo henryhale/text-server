@@ -53,9 +53,9 @@ Once started, open your browser and navigate to `http://localhost:8080` (or your
 
 ## Installation
 
-### Download Binary
+<!-- ### Download Binary
 
-Download the latest release for your platform from the [Releases page](https://github.com/henryhale/text-server/releases).
+Download the latest release for your platform from the [Releases page](https://github.com/henryhale/text-server/releases). -->
 
 ### Building from Source
 
@@ -63,9 +63,6 @@ Download the latest release for your platform from the [Releases page](https://g
 # clone repository
 git clone https://github.com/henryhale/text-server.git
 cd text-editor
-
-# build frontend
-make static
 
 # build the binary
 make build
@@ -86,8 +83,8 @@ Contributions are welcome! Please feel free to submit a pull request.
 ## Acknowledgements
 
 - [Lake.js](https://lakejs.org/) for the WYSIWYG editor
-- [Vue.js](https://vuejs.org/) and [Reka UI Components](https://reka-ui.com) for the frontend
-- [Go](https://golang.org/) for the backend
+- [Vue.js](https://vuejs.org/), [Reka UI](https://reka-ui.com) and [Lucide Icons](https://lucide.dev) for the frontend
+- [Go](https://golang.org/) and [Gin](https://gin-gonic.com) for the backend
 - [Goreleaser](https://goreleaser.com/) for simplified releases
 
 ## License
