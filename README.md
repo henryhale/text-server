@@ -13,6 +13,8 @@ Like [code-server](https://github.com/coder/code-server) but delivering a WYSIWY
 
 Why? I needed a local-first document editing tool in a single executable to allow me create, edit and manage my documents on the go. Basically privacy-focused by self hosting the tool or using it locally on a local area network.
 
+>:warning: work in progress
+
 ## Features
 
 - **WYSIWYG Editor**: Rich text editing with [Lake.js](https://lakejs.org)
@@ -58,6 +60,11 @@ Once started, open your browser and navigate to `http://localhost:8080` (or your
 Download the latest release for your platform from the [Releases page](https://github.com/henryhale/text-server/releases). -->
 
 ### Building from Source
+
+**Prerequisites:**
+
+- Go 1.24+
+- Node.js v22+ and pnpm V10+
 
 ```bash
 # clone repository
