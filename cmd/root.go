@@ -20,7 +20,6 @@ const CommandName = "text-server"
 // from build bindings.
 var (
 	Version = "v0.0.0"
-	Commit  = "(untracked)"
 )
 
 func Init() Config {
@@ -45,7 +44,7 @@ func Init() Config {
 
 	// version
 	if *showVersion {
-		fmt.Printf("%s %s - commit: %s\n", CommandName, Version, Commit)
+		fmt.Printf("%s %s\n", CommandName, Version)
 		os.Exit(0)
 	}
 

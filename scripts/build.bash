@@ -3,6 +3,7 @@
 set -euo pipefail
 
 APP_NAME="text-server"
+APP_REPO="github.com/henryhale/text-server"
 VERSION=$(git describe --tags --always)
 COMMIT=$(git rev-parse HEAD)
 BUILD_DIR="dist"
@@ -27,7 +28,7 @@ for PLATFORM in "${PLATFORMS[@]}"; do
     fi
 
     echo "Building for $GOOS/$GOARCH..."
-    env GOOS=$GOOS GOARCH=$GOARCH go build -o "$BUILD_DIR/$OUTPUT_NAME" .
+    env GOOS=$GOOS GOARCH=$GOARCH go build -ldflags "-s -w -X '$APP_REPO/cmd.Version=$VERSION'" -o "$BUILD_DIR/$OUTPUT_NAME" .
 
     ARCHIVE_NAME="${APP_NAME}-${VERSION}-${GOOS}-${GOARCH}${EXT}"
 
