@@ -5,6 +5,13 @@
 
 A self-hosted, web-based document editor with rich text editing and file management capabilities, packaged as a single executable.
 
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/henryhale/text-server/release.yml)
+![GitHub Release](https://img.shields.io/github/v/release/henryhale/text-server)
+![GitHub License](https://img.shields.io/github/license/henryhale/text-server)
+
+
+![Screen Shot](https://github.com/user-attachments/assets/3b17dbff-d7cd-42c4-b5aa-18653fe84286)
+
 </div>
 
 ## Overview
