@@ -13,7 +13,6 @@ permissions:
 jobs:
   release:
     name: Build and Release binaries
-    needs: release
     runs-on: ubuntu-latest
 
     steps:
