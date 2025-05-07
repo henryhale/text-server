@@ -17,11 +17,11 @@ func main() {
 	log.SetFlags(log.Ltime)
 	// log.SetPrefix("[" + cmd.CommandName + "] ")
 
-	// load env variables
-	util.LoadEnv()
-
 	// init: cli
 	config := cmd.Init()
+
+	// load env variables
+	util.LoadEnv()
 
 	// init: server
 	serve := server.Init(server.Options{
