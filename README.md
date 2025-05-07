@@ -92,7 +92,7 @@ Contributions are welcome! Please feel free to submit a pull request.
 - [Lake.js](https://lakejs.org/) for the WYSIWYG editor
 - [Vue.js](https://vuejs.org/), [Reka UI](https://reka-ui.com) and [Lucide Icons](https://lucide.dev) for the frontend
 - [Go](https://golang.org/) and [Gin](https://gin-gonic.com) for the backend
-- [Goreleaser](https://goreleaser.com/) for simplified releases
+<!-- - [Goreleaser](https://goreleaser.com/) for simplified releases -->
 
 ## License
 
