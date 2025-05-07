@@ -13,12 +13,12 @@ import (
 var staticFiles embed.FS
 
 func main() {
-	// load env variables
-	util.LoadEnv()
-
 	// init: logger
 	log.SetFlags(log.Ltime)
 	// log.SetPrefix("[" + cmd.CommandName + "] ")
+
+	// load env variables
+	util.LoadEnv()
 
 	// init: cli
 	config := cmd.Init()
