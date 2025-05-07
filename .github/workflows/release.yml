@@ -2,10 +2,12 @@ name: Release
 
 on:
   push:
+    branches:
+      - master
     tags:
       - 'v*'
 
-permisions:
+permissions:
   contents: write
 
 jobs:
