@@ -8,8 +8,8 @@ import api from './api'
 
 const state = reactive({
 	layout: 'split',
-	workspace: 'Project Alpha',
-	file: 'business-plan',
+	workspace: 'WORKSPACE',
+	file: 'New Document',
 	data: '',
 	content: '',
 	loadingItems: false,
