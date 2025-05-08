@@ -1,5 +1,5 @@
 <div align=center>
-<img src="./web/public/favicon.svg" width=50 />
+<img src="./web/public/favicon.svg" width=75 />
 
 # text-server
 
@@ -32,39 +32,60 @@ Why? I needed a local-first document editing tool in a single executable to allo
 
 ## Usage
 
-### Starting the Server
-
-Make sure that you have a `.env` file with `PASSWORD=xxxxxxx` in current directory before starting the server.
-
-```bash
-# Start with default settings
-text-server
-
-# Specify a custom port
-text-server --port 8080
-
-# Specify a custom root directory
-text-server --root ~/Documents
-
-# Specify host/IP
-text-server --host 0.0.0.0
-```
-
-Once started, open your browser and navigate to `http://localhost:8080` (or your custom port).
-
 ### Command Line Options
 
 | Flag     | Default           | Description                        |
 | -------- | ----------------- | ---------------------------------- |
-| `--host` | localhost         | Host to bind the server to         |
+| `--host` | 127.0.0.1         | Host to bind the server to         |
 | `--port` | 4321              | Port to run the server on          |
 | `--root` | Current directory | Root directory for file operations |
 
+### Starting the Server
+
+Before starting the server, a password is required for user access control. 
+
+**Setting the password**:
+
+1. With `.env` file
+    ```txt
+    PASSWORD=your_password
+    ```
+    Then run the server with cli options
+
+2. Environment variable
+    ```sh
+    $ PASSWORD=your_password text-server
+    ```
+
+**Configuring the server**:
+
+```bash
+# start with default settings
+text-server
+
+# specify a custom port
+text-server --port 8080
+
+# specify a custom root directory
+text-server --root ~/docs
+
+# specify host/IP
+text-server --host 0.0.0.0
+
+# full example
+text-server --host 0.0.0.0 --port 8080 --root ~/docs
+
+# with PASSWORD variable
+PASSWORD=your_password text-server --host 0.0.0.0 --port 8080 --root ~/docs 
+```
+
+Once started, open your browser and navigate to `http://localhost:8080` (or your custom hostname and port).
+
 ## Installation
 
-<!-- ### Download Binary
+### Download Binary
 
-Download the latest release for your platform from the [Releases page](https://github.com/henryhale/text-server/releases). -->
+Download the latest release for your platform from the [Releases page](https://github.com/henryhale/text-server/releases).
 
 ### Building from Source
 
@@ -76,6 +97,7 @@ Download the latest release for your platform from the [Releases page](https://g
 ```bash
 # clone repository
 git clone https://github.com/henryhale/text-server.git
+
 cd text-editor
 
 # build the binary
