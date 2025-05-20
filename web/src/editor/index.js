@@ -1,22 +1,22 @@
-import 'lakelib/lib/lake.css';
+import "lakelib/lib/lake.css";
 import { Editor, Toolbar } from "lakelib";
 import { toolbarItems } from "./toolbar";
 
 export function createEditor(toolbarElement, contentElement) {
     const toolbar = new Toolbar({
         root: toolbarElement,
-        items: toolbarItems
+        items: toolbarItems,
     });
 
     const editor = new Editor({
         root: contentElement,
         toolbar,
-        value: 'New document',
+        value: "New document",
         spellcheck: false,
         tabIndex: 0,
-        placeholder: '',
+        placeholder: "",
         indentWithTab: true,
-        lang: 'en-US',
+        lang: "en-US",
         minChangeSize: 5,
         historySize: 100,
         slash: false,
@@ -24,15 +24,15 @@ export function createEditor(toolbarElement, contentElement) {
         image: false,
         file: false,
         showMessage: (type, message) => {
-            if (type === 'success') {
+            if (type === "success") {
                 console.log(message);
                 return;
             }
-            if (type === 'warning') {
+            if (type === "warning") {
                 console.warn(message);
                 return;
             }
-            if (type === 'error') {
+            if (type === "error") {
                 console.error(message);
             }
         },
@@ -41,5 +41,5 @@ export function createEditor(toolbarElement, contentElement) {
         },
     });
 
-    return editor
+    return editor;
 }
