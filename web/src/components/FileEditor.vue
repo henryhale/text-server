@@ -2,7 +2,6 @@
 import { useTemplateRef, onMounted, onUnmounted, watchEffect } from "vue";
 import { createEditor } from "../editor";
 import { useState } from "../store";
-import api from "../api";
 
 const state = useState();
 

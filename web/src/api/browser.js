@@ -9,6 +9,15 @@ const storage = createStorage({
     }),
 });
 
+storage.getKeys().then((keys) => {
+    if (!keys.length) {
+        storage.setItem(
+            "sample.txt",
+            "<p><b>Hello World!</b></p><p>This is a sample document.</p><focus />",
+        );
+    }
+});
+
 const createNode = (path, name, dir = false) => ({ path, name, dir });
 
 async function getRootTree() {
@@ -41,4 +50,15 @@ async function createFile(path, name) {
     else throw "File already exists.";
 }
 
-export default { getRootTree, readdir, readFile, writeFile, createFile };
+async function removeFile(path) {
+    return await storage.removeItem(path);
+}
+
+export default {
+    getRootTree,
+    readdir,
+    readFile,
+    writeFile,
+    createFile,
+    removeFile,
+};

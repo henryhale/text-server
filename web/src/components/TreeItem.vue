@@ -5,6 +5,8 @@ import {
     FileIcon,
     FilePlusIcon,
     LoaderCircleIcon,
+    PencilIcon,
+    TrashIcon,
 } from "lucide-vue-next";
 import TreeItem from "./TreeItem.vue";
 import { reactive, ref, onBeforeMount } from "vue";
@@ -30,9 +32,12 @@ const local = reactive({
     children: [],
     newFile: false,
     newFileName: "",
+    renaming: false,
+    newName: "",
 });
 
 const fileNameInput = ref();
+const renameInput = ref();
 
 onBeforeMount(() => !!props.autoload && onClick());
 
@@ -95,6 +100,34 @@ function createFile() {
             local.newFileName = "";
         });
 }
+
+function showRenameForm() {
+    local.renaming = true;
+    local.newName = props.item?.name ?? "";
+}
+
+function renameFile() {
+    // rename a file and refresh root
+    // ...
+    renameInput.value?.focus();
+    console.log("rename:", props.item.path, "to:", local.newName);
+    // ...
+    setTimeout(() => (local.renaming = false), 1000);
+}
+
+function deleteItem() {
+    // delete the file - then refresh root
+    // ...
+    if (!confirm("Delete this file? - " + props.item.path)) return;
+    console.log("delete:", props.item.path);
+    api.removeFile(props.item.path)
+        .then(() => {
+            state.file.name = "";
+            state.file.path = "";
+        })
+        .then(() => state.refreshExplorer())
+        .catch(console.error);
+}
 </script>
 
 <template>
@@ -115,14 +148,39 @@ function createFile() {
                 </template>
                 <LoaderCircleIcon v-else class="size-4 animate-spin" />
             </div>
-            <div class="flex-grow overflow-hidden text-ellipsis">
+            <div
+                v-if="local.renaming"
+                class="w-full pr-1"
+                :class="{ 'w-0 h-0 overflow-hidden': !local.renaming }"
+            >
+                <input
+                    ref="renameInput"
+                    v-model.trim="local.newName"
+                    type="text"
+                    spellcheck="false"
+                    class="w-full"
+                    @blur.stop="renameFile"
+                    @keyup.enter.stop="renameInput.blur()"
+                />
+            </div>
+            <div v-else class="flex-grow overflow-hidden text-ellipsis">
                 {{ item.name }}
             </div>
             <div
-                class="hidden group-hover:flex absolute right-0 top-0 bottom-0 items-center space-x-1 px-2"
+                :class="{ 'group-hover:flex': !local.renaming }"
+                class="hidden absolute right-0 top-0 bottom-0 items-center space-x-1 px-2"
             >
                 <button v-if="item.dir" @click.stop="showNewFileForm">
                     <FilePlusIcon class="size-4" />
+                </button>
+                <button
+                    v-if="props.item.path !== ''"
+                    @click.stop="showRenameForm"
+                >
+                    <PencilIcon class="size-4" />
+                </button>
+                <button v-if="props.item.path !== ''" @click.stop="deleteItem">
+                    <TrashIcon class="size-4" />
                 </button>
             </div>
         </div>
@@ -148,6 +206,7 @@ function createFile() {
                     @blur.stop="createFile"
                     @keyup.enter.stop="fileNameInput.blur()"
                     type="text"
+                    spellcheck="false"
                 />
             </div>
         </div>
