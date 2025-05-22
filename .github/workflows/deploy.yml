@@ -41,7 +41,7 @@ jobs:
         run: cd web && pnpm install
 
       - name: Build
-        run: pnpm "build:browser"
+        run: pnpm build:browser
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
