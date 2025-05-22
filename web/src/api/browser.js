@@ -54,9 +54,9 @@ async function removeFile(path) {
     return await storage.removeItem(path);
 }
 
-async function renameFile(path, newName) {
+async function renameFile(path, name) {
     const content = await storage.getItem(path);
-    await storage.setItem(newName, content);
+    await storage.setItem(name, content);
     return await storage.removeItem(path);
 }
 

@@ -57,7 +57,6 @@ function loadDirectory() {
     local.loading = true;
     api.readdir(props.item.path)
         .then((res) => {
-            log.debug("dir: ", props.item.path, res.content);
             local.children = [
                 ...(res.content.folders || []),
                 ...(res.content.files || []),

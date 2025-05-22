@@ -1,11 +1,10 @@
 <script setup>
 import AppHeader from "./components/AppHeader.vue";
 import AppMain from "./components/AppMain.vue";
+import FileEditor from "./components/FileEditor.vue";
 import TreeView from "./components/TreeView.vue";
 import { useState } from "./store";
 import { computed } from "vue";
-
-const FileEditor = import("./components/FileEditor.vue");
 
 const state = useState();
 

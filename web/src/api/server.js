@@ -34,10 +34,9 @@ const writeFile = (path, content) => apiRequest("/save", { path, content });
 
 const createFile = (path, name) => apiRequest("/create", { path, name });
 
-const renameFile = (oldpath, newpath) =>
-    apiRequest("/rename", { oldpath, newpath });
-
 const removeFile = (path) => apiRequest("/remove", { path });
+
+const renameFile = (path, name) => apiRequest("/rename", { path, name });
 
 export default {
     IS_SERVER: true,
