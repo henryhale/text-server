@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive, shallowRef } from "vue";
 import api from "../api";
+import log from "../utils/log";
 
 export const useState = defineStore("state", () => {
     const app = reactive({
@@ -20,7 +21,7 @@ export const useState = defineStore("state", () => {
     }
 
     function refreshExplorer() {
-        console.log("refreshing explorer");
+        log.debug("refreshing explorer");
         const tmp = app.files.splice(0);
         app.loadingFiles = true;
         api.getRootTree()
@@ -28,7 +29,7 @@ export const useState = defineStore("state", () => {
                 app.files.push(res.content);
             })
             .catch((e) => {
-                console.error(e);
+                log.error(e);
                 app.files.push(...tmp);
             })
             .finally(() => {
@@ -50,15 +51,14 @@ export const useState = defineStore("state", () => {
         const filePath = file.path;
         if (lastSave.id && lastSave.path === filePath) {
             clearTimeout(lastSave.id);
-            console.log("write: debounced");
         }
         lastSave.path = filePath;
         lastSave.id = setTimeout(() => {
             api.writeFile(filePath, content)
-                .then(console.log)
-                .catch(console.error)
+                .then(log.debug)
+                .catch(log.error)
                 .finally(() => {
-                    console.log("write: complete!");
+                    log.info("write: file saved successfully!");
                 });
         }, lastSave.debounceTime);
     }

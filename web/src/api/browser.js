@@ -54,11 +54,19 @@ async function removeFile(path) {
     return await storage.removeItem(path);
 }
 
+async function renameFile(path, newName) {
+    const content = await storage.getItem(path);
+    await storage.setItem(newName, content);
+    return await storage.removeItem(path);
+}
+
 export default {
+    IS_SERVER: false,
     getRootTree,
     readdir,
     readFile,
     writeFile,
     createFile,
     removeFile,
+    renameFile,
 };

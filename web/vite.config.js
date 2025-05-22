@@ -15,12 +15,8 @@ export default defineConfig({
             },
             output: {
                 manualChunks(id) {
-                    if (id.includes("node_modules")) {
-                        const moduleName = id
-                            .split("node_modules/")[1]
-                            .split("/")[0];
-                        return `vendor-${moduleName}`;
-                    }
+                    if (id.includes("reka")) return "ui";
+                    if (id.includes("lucide")) return "icons";
                     return null;
                 },
             },

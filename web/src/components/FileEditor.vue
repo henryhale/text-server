@@ -16,7 +16,6 @@ onMounted(() => {
 
     editor.event.on("change", (value) => {
         // save content to storage
-        // ...
         state.saveCurrentFile(value);
     });
 

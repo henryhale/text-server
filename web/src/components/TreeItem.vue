@@ -12,6 +12,7 @@ import TreeItem from "./TreeItem.vue";
 import { reactive, ref, onBeforeMount } from "vue";
 import { useState } from "../store";
 import api from "../api";
+import log from "../utils/log";
 
 const state = useState();
 
@@ -53,16 +54,16 @@ function onClick() {
 
 function loadDirectory() {
     // fetch files for current directory
-    // ...
     local.loading = true;
     api.readdir(props.item.path)
         .then((res) => {
+            log.debug("dir: ", props.item.path, res.content);
             local.children = [
                 ...(res.content.folders || []),
                 ...(res.content.files || []),
             ];
         })
-        .catch(console.error)
+        .catch(log.error)
         .finally(() => {
             local.loading = false;
         });
@@ -70,16 +71,23 @@ function loadDirectory() {
 
 function loadFile() {
     // load file content
-    // ...
     local.loading = true;
     api.readFile(props.item.path)
         .then((res) => {
             state.file.content = res.content;
         })
-        .catch(console.error)
+        .catch(log.error)
         .finally(() => {
             local.loading = false;
         });
+}
+
+function refreshTree() {
+    if (api.IS_SERVER) {
+        loadDirectory();
+    } else {
+        state.refreshExplorer();
+    }
 }
 
 function showNewFileForm() {
@@ -89,13 +97,12 @@ function showNewFileForm() {
 }
 
 function createFile() {
-    console.log("create file 1: ", props.item.path, local.newFileName);
     local.newFile = false;
     if (!local.newFileName) return;
-    console.log("create file 2: ", props.item.path, local.newFileName);
+    log.debug("create: ", props.item.path, local.newFileName);
     api.createFile(props.item.path, local.newFileName)
-        .then(() => loadDirectory())
-        .catch(console.error)
+        .then(() => refreshTree())
+        .catch(log.error)
         .finally(() => {
             local.newFileName = "";
         });
@@ -104,29 +111,35 @@ function createFile() {
 function showRenameForm() {
     local.renaming = true;
     local.newName = props.item?.name ?? "";
+    setTimeout(() => renameInput.value?.focus());
 }
 
 function renameFile() {
     // rename a file and refresh root
-    // ...
-    renameInput.value?.focus();
-    console.log("rename:", props.item.path, "to:", local.newName);
-    // ...
-    setTimeout(() => (local.renaming = false), 1000);
+    if (!local.newName.length || props.item.name === local.newName) {
+        local.renaming = false;
+        return;
+    }
+    log.debug("rename -", "from:", props.item.name, "to:", local.newName);
+    api.renameFile(props.item.path, local.newName)
+        .then(() => refreshTree())
+        .catch(log.error)
+        .finally(() => {
+            local.renaming = false;
+        });
 }
 
 function deleteItem() {
     // delete the file - then refresh root
-    // ...
     if (!confirm("Delete this file? - " + props.item.path)) return;
-    console.log("delete:", props.item.path);
+    log.debug("delete:", props.item.path);
     api.removeFile(props.item.path)
         .then(() => {
             state.file.name = "";
             state.file.path = "";
         })
-        .then(() => state.refreshExplorer())
-        .catch(console.error);
+        .then(() => refreshTree())
+        .catch(log.error);
 }
 </script>
 
