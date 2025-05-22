@@ -151,11 +151,13 @@ func Init(s Options) func() {
 			c.Next()
 		})
 
-		api.POST("/tree", treeHandler(*s.Workspace))
+		api.POST("/root", rootHandler(*s.Workspace))
+		api.POST("/list", listHandler(*s.Workspace))
 		api.POST("/load", readHandler(*s.Workspace))
 		api.POST("/save", writeHandler(*s.Workspace))
-		api.POST("/rename", renameHandler(*s.Workspace))
 		api.POST("/create", createHandler(*s.Workspace))
+		api.POST("/remove", removeHandler(*s.Workspace))
+		api.POST("/rename", renameHandler(*s.Workspace))
 	}
 
 	return func() {

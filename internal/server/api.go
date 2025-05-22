@@ -10,14 +10,29 @@ import (
 )
 
 // list directory contents - one level.
-func treeHandler(workspace string) func(*gin.Context) {
+func rootHandler(workspace string) func(*gin.Context) {
 	return func(c *gin.Context) {
-		contents, err := fs.GetWorkspaceTree(workspace)
+		contents, err := fs.GetWorkspace(workspace)
 		if err != nil {
 			log.Printf("error: %s", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to get directory contents"})
 		} else {
 			c.JSON(http.StatusOK, gin.H{"content": contents})
+		}
+	}
+}
+
+// read a directory.
+func listHandler(workspace string) func(*gin.Context) {
+	return func(c *gin.Context) {
+		dirPath := c.PostForm("path")
+
+		content, err := fs.ReadWorkspaceFolder(workspace, dirPath)
+		if err != nil {
+			log.Printf("error: %s", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to read file"})
+		} else {
+			c.JSON(http.StatusOK, gin.H{"content": content})
 		}
 	}
 }
@@ -53,13 +68,28 @@ func writeHandler(workspace string) func(*gin.Context) {
 	}
 }
 
-// rename a file.
-func renameHandler(workspace string) func(*gin.Context) {
+// create a file.
+func createHandler(workspace string) func(*gin.Context) {
 	return func(c *gin.Context) {
-		oldPath := c.PostForm("oldpath")
-		newName := c.PostForm("newname")
+		filePath := c.PostForm("path")
+		fileName := c.PostForm("name")
 
-		err := fs.RenameWorkspaceFile(workspace, oldPath, newName)
+		err := fs.CreateWorkspaceFile(workspace, filePath, fileName)
+		if err != nil {
+			log.Printf("error: %s", err)
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create file"})
+		} else {
+			c.JSON(http.StatusOK, gin.H{})
+		}
+	}
+}
+
+// delete a file.
+func removeHandler(workspace string) func(*gin.Context) {
+	return func(c *gin.Context) {
+		filePath := c.PostForm("path")
+
+		err := fs.RemoveWorkspaceFile(workspace, filePath)
 		if err != nil {
 			log.Printf("error: %s", err)
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to rename file"})
@@ -69,15 +99,16 @@ func renameHandler(workspace string) func(*gin.Context) {
 	}
 }
 
-// create a file.
-func createHandler(workspace string) func(*gin.Context) {
+// rename a file.
+func renameHandler(workspace string) func(*gin.Context) {
 	return func(c *gin.Context) {
-		filePath := c.PostForm("path")
+		oldPath := c.PostForm("path")
+		newName := c.PostForm("name")
 
-		err := fs.CreateWorkspaceFile(workspace, filePath)
+		err := fs.RenameWorkspaceFile(workspace, oldPath, newName)
 		if err != nil {
 			log.Printf("error: %s", err)
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to create file"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to rename file"})
 		} else {
 			c.JSON(http.StatusOK, gin.H{})
 		}

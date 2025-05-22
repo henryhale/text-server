@@ -21,5 +21,5 @@ func LoadEnv() {
 		return
 	}
 
-	log.Fatal("error: $PASSWORD is not set - use environment variable or .env file.", err)
+	log.Fatal("error: $PASSWORD is not set - use environment variable or .env file.\n", err)
 }
