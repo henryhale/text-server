@@ -134,7 +134,6 @@ func CreateWorkspaceFile(workspace string, dirPath string, fileName string) erro
 		if os.IsExist(err) {
 			return errors.New("file already exists")
 		}
-		return err
 	}
 
 	baseDir := filepath.Dir(filePath)
