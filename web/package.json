@@ -1,25 +1,27 @@
 {
-  "name": "web",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "lakelib": "^0.4.0",
-    "lucide-vue-next": "^0.507.0",
-    "reka-ui": "^2.2.0",
-    "vue": "^3.5.13"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.2",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.3",
-    "tailwindcss": "3",
-    "vite": "^6.3.1",
-    "vite-plugin-minify": "^2.1.0"
-  }
+    "name": "web",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "VITE_BUILD_FOR=browser vite",
+        "build": "VITE_BUILD_FOR=server vite build",
+        "build:browser": "VITE_BUILD_FOR=browser vite build"
+    },
+    "dependencies": {
+        "lakelib": "^0.4.0",
+        "lucide-vue-next": "^0.507.0",
+        "pinia": "^3.0.2",
+        "reka-ui": "^2.2.0",
+        "unstorage": "^1.16.0",
+        "vue": "^3.5.13"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-vue": "^5.2.2",
+        "autoprefixer": "^10.4.21",
+        "postcss": "^8.5.3",
+        "tailwindcss": "3",
+        "vite": "^6.3.1",
+        "vite-plugin-minify": "^2.1.0"
+    }
 }

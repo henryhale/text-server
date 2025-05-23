@@ -1,22 +1,28 @@
 <script setup>
-import { useTemplateRef, onMounted, onUnmounted, watchEffect } from 'vue';
-import { createEditor } from '../editor';
+import { useTemplateRef, onMounted, onUnmounted, watchEffect } from "vue";
+import { createEditor } from "../editor";
+import { useState } from "../store";
 
-const props = defineProps(['value'])
-const emit = defineEmits(["change"])
+const state = useState();
 
-const toolbarRef = useTemplateRef('toolbarRef');
-const contentRef = useTemplateRef('contentRef');
+const toolbarRef = useTemplateRef("toolbarRef");
+const contentRef = useTemplateRef("contentRef");
 
 let editor = null;
 
 onMounted(() => {
-    editor = createEditor(toolbarRef.value, contentRef.value)
-    editor.render()
-    editor.event.on('change', (value) => emit("change", value))
-    editor.focus()
+    editor = createEditor(toolbarRef.value, contentRef.value);
+    editor.render();
 
-    watchEffect(() => editor.setValue(props.value))
+    editor.event.on("change", (value) => {
+        // save content to storage
+        state.saveCurrentFile(value);
+    });
+
+    watchEffect(() => {
+        editor.setValue(state.file.content);
+        if (state.file.path) editor.focus();
+    });
 });
 
 onUnmounted(() => {

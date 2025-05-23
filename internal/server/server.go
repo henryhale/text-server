@@ -2,11 +2,13 @@ package server
 
 import (
 	"embed"
+	"fmt"
 	"io/fs"
 	"log"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
@@ -102,7 +104,27 @@ func Init(s Options) func() {
 	// server: init
 	router := gin.New()
 	router.SetTrustedProxies(nil)
-	router.Use(gin.Logger())
+
+	// logger
+	gin.DefaultWriter = os.Stdout
+    gin.DisableConsoleColor()
+	router.Use(gin.LoggerWithFormatter(
+		func(param gin.LogFormatterParams) string {
+			if len(param.ErrorMessage) != 0 {
+				return fmt.Sprintf("[%s] %s\n", param.TimeStamp.Format(time.TimeOnly), param.ErrorMessage)
+			}
+			return fmt.Sprintf("[%s] [%s] %s %d %s %s\n",
+				param.TimeStamp.Format(time.TimeOnly),
+				param.ClientIP,
+				param.Method,
+				param.StatusCode,
+				param.Latency,
+				param.Path,
+			)
+  }))
+
+	// automatic recovery
+	router.Use(gin.Recovery())
 
 	hp := *s.Host + ":" + *s.Port
 
@@ -115,6 +137,18 @@ func Init(s Options) func() {
 		AllowCredentials: true,
 		MaxAge:           3600,
 	}))
+
+	// security headers
+	router.Use(func(c *gin.Context) {
+		c.Header("X-Frame-Options", "DENY")
+		c.Header("Content-Security-Policy", "default-src 'self'; connect-src *; font-src *; script-src-elem * 'unsafe-inline'; img-src * data:; style-src * 'unsafe-inline';")
+		c.Header("X-XSS-Protection", "1; mode=block")
+		c.Header("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload")
+		c.Header("Referrer-Policy", "strict-origin")
+		c.Header("X-Content-Type-Options", "nosniff")
+		c.Header("Permissions-Policy", "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()")
+		c.Next()
+	}) 
 
 	// session store
 	store := cookie.NewStore([]byte("secret"))
@@ -151,11 +185,15 @@ func Init(s Options) func() {
 			c.Next()
 		})
 
-		api.POST("/tree", treeHandler(*s.Workspace))
+		api.POST("/health", healthHandler)
+
+		api.POST("/root", rootHandler(*s.Workspace))
+		api.POST("/list", listHandler(*s.Workspace))
 		api.POST("/load", readHandler(*s.Workspace))
 		api.POST("/save", writeHandler(*s.Workspace))
-		api.POST("/rename", renameHandler(*s.Workspace))
 		api.POST("/create", createHandler(*s.Workspace))
+		api.POST("/remove", removeHandler(*s.Workspace))
+		api.POST("/rename", renameHandler(*s.Workspace))
 	}
 
 	return func() {

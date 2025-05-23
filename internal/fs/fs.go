@@ -7,6 +7,29 @@ import (
 	"strings"
 )
 
+type FileNode struct {
+	Name    string     `json:"name"`
+	Path    string     `json:"path"`
+	IsDir   bool       `json:"dir"`
+	Files   []FileNode `json:"files,omitempty"`
+	Folders []FileNode `json:"folders,omitempty"`
+}
+
+func GetWorkspace(workspace string) (FileNode, error) {
+	var root FileNode
+
+	info, err := os.Stat(workspace)
+	if err != nil {
+		return FileNode{}, err
+	}
+
+	root.IsDir = true
+	root.Name = info.Name()
+	root.Path = ""
+
+	return root, nil
+}
+
 // check if target path exists under the workspace path.
 func validatePath(workspace string, targetPath string) (string, error) {
 	absTarget, err := filepath.Abs(filepath.Join(workspace, targetPath))
@@ -25,6 +48,45 @@ func validatePath(workspace string, targetPath string) (string, error) {
 	return absTarget, nil
 }
 
+// get directory contents - one level.
+func ReadWorkspaceFolder(workspace string, filePath string) (FileNode, error) {
+	dirPath, err := validatePath(workspace, filePath)
+	if err != nil {
+		return FileNode{}, err
+	}
+
+	entries, _ := os.ReadDir(dirPath)
+
+	result := FileNode{
+		IsDir:   true,
+		Files:   []FileNode{},
+		Folders: []FileNode{},
+	}
+
+	for _, entry := range entries {
+		if strings.HasPrefix(entry.Name(), ".") {
+			continue
+		}
+		filePath, err := filepath.Rel(workspace, filepath.Join(dirPath, entry.Name()))
+		if err != nil {
+			// log.Printf("error: %s", err.Error())
+			continue
+		}
+		node := FileNode{
+			Path:  filePath,
+			Name:  entry.Name(),
+			IsDir: entry.IsDir(),
+		}
+		if node.IsDir {
+			result.Folders = append(result.Folders, node)
+		} else {
+			result.Files = append(result.Files, node)
+		}
+	}
+
+	return result, nil
+}
+
 // read a file in the workspace.
 func ReadWorkspaceFile(workspace string, filePath string) (string, error) {
 	fp, err := validatePath(workspace, filePath)
@@ -41,7 +103,6 @@ func ReadWorkspaceFile(workspace string, filePath string) (string, error) {
 }
 
 // write a file in the workspace.
-
 const PERM_WRITE_FILE int = 0600
 
 func WriteWorkspaceFile(workspace string, filePath string, content string) error {
@@ -58,71 +119,54 @@ func WriteWorkspaceFile(workspace string, filePath string, content string) error
 	return nil
 }
 
-// build a directory tree
+// create a file in the workspace.
+const PERM_CREATE_DIR int = 0750
 
-type Node struct {
-	Name    string `json:"name"`
-	Path    string `json:"path"`
-	IsDir   bool   `json:"dir"`
-	Files   []Node `json:"files,omitempty"`
-	Folders []Node `json:"folders,omitempty"`
-}
-
-func GetWorkspaceTree(workspace string) (Node, error) {
-	var buildTree func(string, string) (Node, error)
-
-	buildTree = func(path string, rel string) (Node, error) {
-		info, err := os.Stat(path)
-		if err != nil {
-			return Node{}, err
-		}
-
-		node := Node{
-			Name:  info.Name(),
-			IsDir: info.IsDir(),
-			Path:  rel,
-		}
-
-		if !node.IsDir {
-			return node, nil
-		}
-
-		entries, err := os.ReadDir(path)
-		if err != nil {
-			return Node{}, err
-		}
-
-		for _, entry := range entries {
-			// skip dotfiles
-			if strings.HasPrefix(entry.Name(), ".") {
-				continue
-			}
-			// skip binaries or executables
-			// if !entry.IsDir() && entry.Mode()&0111 != 0 {
-			//	continue
-			// }
-
-			childPath := filepath.Join(path, entry.Name())
-			childRelativePath := filepath.Join(rel, entry.Name())
-
-			childNode, err := buildTree(childPath, childRelativePath)
-			if err != nil {
-				return Node{}, nil
-			}
-
-			if childNode.IsDir {
-				node.Folders = append(node.Folders, childNode)
-			} else {
-				node.Files = append(node.Files, childNode)
-			}
-		}
-
-		return node, nil
+func CreateWorkspaceFile(workspace string, dirPath string, fileName string) error {
+	fp, err := validatePath(workspace, dirPath)
+	if err != nil {
+		return err
 	}
 
-	root, err := buildTree(workspace, ".")
+	filePath := filepath.Join(fp, fileName)
 
-	return root, err
+	if _, err := os.Stat(filePath); err != nil {
+		if os.IsExist(err) {
+			return errors.New("file already exists")
+		}
+	}
+
+	baseDir := filepath.Dir(filePath)
+
+	_, err = os.Stat(baseDir)
+	if err != nil {
+		if os.IsNotExist(err) {
+			if err := os.MkdirAll(baseDir, os.FileMode(PERM_CREATE_DIR)); err != nil {
+				return err
+			}
+		}
+	}
+
+	err = os.WriteFile(filePath, []byte(""), os.FileMode(PERM_WRITE_FILE))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// delete a file in the workspace.
+func RemoveWorkspaceFile(workspace string, filePath string) error {
+	fp, err := validatePath(workspace, filePath)
+	if err != nil {
+		return err
+	}
+
+	if err := os.Remove(fp); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // rename a file in the workspace.
@@ -140,37 +184,6 @@ func RenameWorkspaceFile(workspace string, oldPath string, newName string) error
 	}
 
 	err = os.Rename(op, np)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// create a file in the workspace.
-
-const PERM_CREATE_DIR int = 0750
-
-func CreateWorkspaceFile(workspace string, filePath string) error {
-	fp := filepath.Join(workspace, filePath)
-
-	_, err := os.Stat(fp)
-	if err == nil {
-		return errors.New("file already exists")
-	}
-
-	baseDir := filepath.Dir(fp)
-
-	_, err = os.Stat(baseDir)
-	if err != nil {
-		if os.IsNotExist(err) {
-			if err := os.MkdirAll(baseDir, os.FileMode(PERM_CREATE_DIR)); err != nil {
-				return err
-			}
-		}
-	}
-
-	err = os.WriteFile(fp, []byte(""), os.FileMode(PERM_WRITE_FILE))
 	if err != nil {
 		return err
 	}

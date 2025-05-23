@@ -1,35 +1,47 @@
 <script setup>
-import { PanelLeftIcon, PanelRightIcon, Columns2Icon } from 'lucide-vue-next'
-import MenuBar from './MenuBar.vue'
+import { PanelLeftIcon, PanelRightIcon, Columns2Icon } from "lucide-vue-next";
+import MenuBar from "./MenuBar.vue";
+import { useState } from "../store";
 
-const emit = defineEmits(["layout", "menu"])
-const props = defineProps(["file"])
+const state = useState();
 
 const buttons = [
-	{ icon: PanelLeftIcon, action: () => emit("layout", "left") },
-	{ icon: Columns2Icon, action: () => emit("layout", "split") },
-	{ icon: PanelRightIcon, action: () => emit("layout", "right") },
-]
+    { icon: PanelLeftIcon, action: () => state.setLayout("left") },
+    { icon: Columns2Icon, action: () => state.setLayout("split") },
+    { icon: PanelRightIcon, action: () => state.setLayout("right") },
+];
 </script>
 
 <template>
-	<header class="flex items-center select-none space-x-2 lg:space-x-4 border-b px-4 py-0.5">
-		<div>
-			<img src="/favicon.svg" class="size-4 lg:size-6" />
-		</div>
+    <header
+        class="flex items-center select-none space-x-2 lg:space-x-4 border-b pl-3 pr-4"
+    >
+        <div>
+            <img src="/favicon.svg" class="size-4 md:size-6" />
+        </div>
 
-		<MenuBar @select="v => emit('menu', v)" />
+        <MenuBar />
 
-		<div class="flex-grow text-center py-0.5">
-			<span class="bg-slate-100 rounded-md hidden lg:inline-block w-1/2 border text-sm">
-				{{ props.file }}
-			</span>
-		</div>
+        <div class="flex-grow text-center py-0.5">
+            <span
+                class="bg-slate-200 rounded-md hidden sm:inline-block w-1/2 border border-slate-300 text-sm"
+            >
+                {{ state.file.name || "&nbsp;" }}
+            </span>
+        </div>
 
-		<div class="space-x-1 lg:space-x-2 flex">
-			<button v-for="b in buttons" :key="b" @click="b.action()" class="inline-flex items-center rounded-md p-2">
-				<component :is="b.icon" class="stroke-current w-4 h-4"></component>
-			</button>
-		</div>
-	</header>
+        <div class="space-x-1 lg:space-x-2 flex py-0.5">
+            <button
+                v-for="b in buttons"
+                :key="b"
+                @click="b.action()"
+                class="btn inline-flex items-center rounded-md px-2 py-1.5"
+            >
+                <component
+                    :is="b.icon"
+                    class="stroke-current w-4 h-4"
+                ></component>
+            </button>
+        </div>
+    </header>
 </template>
