@@ -113,13 +113,13 @@ func Init(s Options) func() {
 			if len(param.ErrorMessage) != 0 {
 				return fmt.Sprintf("[%s] %s\n", param.TimeStamp.Format(time.TimeOnly), param.ErrorMessage)
 			}
-			return fmt.Sprintf("[%s] [%s] %s %s %s %s %s\n",
+			return fmt.Sprintf("[%s] [%s] %s %d %s %s\n",
 				param.TimeStamp.Format(time.TimeOnly),
 				param.ClientIP,
 				param.Method,
 				param.StatusCode,
+				param.Latency,
 				param.Path,
-				param.Request.UserAgent(),
 			)
   }))
 
