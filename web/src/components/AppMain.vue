@@ -31,7 +31,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <main class="w-full h-[calc(100dvh-37px)] text-sm">
+    <main class="w-full h-[calc(100dvh-33px)] text-sm">
         <SplitterGroup id="splitter-group-1" direction="horizontal">
             <SplitterPanel
                 ref="panelLeft"

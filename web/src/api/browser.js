@@ -60,6 +60,10 @@ async function renameFile(path, name) {
     return await storage.removeItem(path);
 }
 
+async function getHealth() {
+    return await Promise.resolve({ content: "OK" })
+}
+
 export default {
     IS_SERVER: false,
     getRootTree,
@@ -69,4 +73,5 @@ export default {
     createFile,
     removeFile,
     renameFile,
+    getHealth,
 };

@@ -9,6 +9,12 @@ import (
 	"github.com/henryhale/text-server/internal/fs"
 )
 
+// health check
+func healthHandler(c *gin.Context) {
+	c.AbortWithStatusJSON(http.StatusOK, gin.H{ "content": "OK" })
+}
+
+
 // list directory contents - one level.
 func rootHandler(workspace string) func(*gin.Context) {
 	return func(c *gin.Context) {

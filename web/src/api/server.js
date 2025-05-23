@@ -38,6 +38,8 @@ const removeFile = (path) => apiRequest("/remove", { path });
 
 const renameFile = (path, name) => apiRequest("/rename", { path, name });
 
+const getHealth = () => apiRequest("/health");
+
 export default {
     IS_SERVER: true,
     getRootTree,
@@ -47,4 +49,5 @@ export default {
     createFile,
     renameFile,
     removeFile,
+    getHealth,
 };

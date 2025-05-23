@@ -2,6 +2,7 @@
 import AppHeader from "./components/AppHeader.vue";
 import AppMain from "./components/AppMain.vue";
 import FileEditor from "./components/FileEditor.vue";
+import StatusBar from "./components/StatusBar.vue";
 import TreeView from "./components/TreeView.vue";
 import { useState } from "./store";
 import { computed } from "vue";
@@ -15,7 +16,10 @@ const showEditor = computed(() => state.file.path && state.file.name);
     <AppHeader />
     <AppMain>
         <template #left>
-            <TreeView />
+            <div class="flex flex-col h-full">
+                <TreeView class="flex-grow" />
+                <StatusBar />
+            </div>
         </template>
         <template #right>
             <FileEditor v-show="showEditor" />
