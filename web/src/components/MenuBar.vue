@@ -35,7 +35,7 @@ const menu = {
     },
 };
 
-const isExternal = (k) => ["License"].includes(k);
+const isExternal = (k) => ["License", "About", "Report Issue"].includes(k);
 </script>
 
 <template>
