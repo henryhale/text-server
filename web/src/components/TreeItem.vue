@@ -198,7 +198,7 @@ function deleteItem() {
         </div>
         <div
             v-show="local.expanded"
-            class="ml-4 border-l pl-4 border-slate-400"
+            class="ml-4 border-l pl-2 border-slate-400"
         >
             <ul v-show="local.children && !local.loading">
                 <TreeItem

@@ -17,7 +17,7 @@ const showEditor = computed(() => state.file.path && state.file.name);
     <AppMain>
         <template #left>
             <div class="flex flex-col h-full">
-                <TreeView class="flex-grow" />
+                <TreeView class="flex-grow overflow-y-auto" />
                 <StatusBar />
             </div>
         </template>
