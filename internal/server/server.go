@@ -28,7 +28,7 @@ func isLoggedIn(c *gin.Context) bool {
 // verify password when login form is submitted.
 func loginHandler(c *gin.Context) {
 	if isLoggedIn(c) {
-		c.Redirect(http.StatusFound, "/app/")
+		c.Redirect(http.StatusFound, "/")
 		c.Abort()
 
 		return
@@ -47,12 +47,12 @@ func loginHandler(c *gin.Context) {
 		}
 
 		// redirect to app
-		c.Redirect(http.StatusFound, "/app/")
+		c.Redirect(http.StatusFound, "/")
 
 		return
 	}
 
-	c.Redirect(http.StatusFound, "/")
+	c.Redirect(http.StatusFound, "/login/")
 }
 
 func defaultRouteHandler(staticFiles *fs.FS) func(*gin.Context) {
@@ -70,16 +70,16 @@ func defaultRouteHandler(staticFiles *fs.FS) func(*gin.Context) {
 		}
 
 		// require authorization
-		if strings.Contains(c.Request.URL.Path, "/app/") && !isLoggedIn(c) {
-			c.Redirect(http.StatusFound, "/")
+		if c.Request.URL.Path == "/" && !isLoggedIn(c) {
+			c.Redirect(http.StatusFound, "/login/")
 			c.Abort()
 
 			return
 		}
 
 		// redirect logged user or active session
-		if c.Request.URL.Path == "/" && isLoggedIn(c) {
-			c.Redirect(http.StatusFound, "/app/")
+		if c.Request.URL.Path == "/login/" && isLoggedIn(c) {
+			c.Redirect(http.StatusFound, "/")
 			c.Abort()
 
 			return
@@ -107,7 +107,7 @@ func Init(s Options) func() {
 
 	// logger
 	gin.DefaultWriter = os.Stdout
-    gin.DisableConsoleColor()
+	gin.DisableConsoleColor()
 	router.Use(gin.LoggerWithFormatter(
 		func(param gin.LogFormatterParams) string {
 			if len(param.ErrorMessage) != 0 {
@@ -121,7 +121,7 @@ func Init(s Options) func() {
 				param.Latency,
 				param.Path,
 			)
-  }))
+		}))
 
 	// automatic recovery
 	router.Use(gin.Recovery())
@@ -148,7 +148,7 @@ func Init(s Options) func() {
 		c.Header("X-Content-Type-Options", "nosniff")
 		c.Header("Permissions-Policy", "geolocation=(),midi=(),sync-xhr=(),microphone=(),camera=(),magnetometer=(),gyroscope=(),fullscreen=(self),payment=()")
 		c.Next()
-	}) 
+	})
 
 	// session store
 	store := cookie.NewStore([]byte("secret"))
@@ -160,7 +160,7 @@ func Init(s Options) func() {
 	router.Use(sessions.Sessions(cmd.CommandName+"-session", store))
 
 	// login form
-	router.POST("/", loginHandler)
+	router.POST("/login/", loginHandler)
 
 	// create sub file system for static files from embed
 	fsys, err := fs.Sub(*s.StaticFiles, "static")

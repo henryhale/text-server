@@ -2,37 +2,14 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="shortcut icon" href="/favicon.svg" type="image/xml+svg" />
-        <title>login | text-server</title>
+        <title>app | text-server</title>
         <link rel="stylesheet" href="./style.css" />
     </head>
 
-    <body class="login">
-        <div>
-            <div class="space-y-3 text-center">
-                <img
-                    src="/favicon.svg"
-                    alt=""
-                    class="w-12 h-12 inline-block mx-auto"
-                />
-                <h1 class="text-xl font-bold">Sign In</h1>
-            </div>
-            <form method="post" action="/" class="space-y-6 w-full">
-                <p class="flex flex-col space-y-2">
-                    <label for="input">Enter your password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        id="input"
-                        placeholder="type here..."
-                        autofocus
-                    />
-                </p>
-                <p>
-                    <button type="submit">Submit</button>
-                </p>
-            </form>
-        </div>
+    <body>
+        <div id="app"></div>
+        <script type="module" src="./src/main.js"></script>
     </body>
 </html>

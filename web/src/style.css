@@ -1,3 +1,8 @@
+html,
+body {
+    @apply overflow-hidden;
+}
+
 input {
     @apply block w-full px-2 py-0.5 outline-none focus:outline-none border border-slate-300 rounded focus:border-slate-400 bg-transparent;
 }

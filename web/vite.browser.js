@@ -4,6 +4,7 @@ import { ViteMinifyPlugin } from "vite-plugin-minify";
 
 // https://vite.dev/config/
 export default defineConfig({
+    base: "/text-server/",
     plugins: [vue(), ViteMinifyPlugin()],
     build: {
         outDir: "../static",
@@ -11,7 +12,6 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 main: "./index.html",
-                app: "./app/index.html",
             },
             output: {
                 manualChunks(id) {
