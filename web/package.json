@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "VITE_BUILD_FOR=browser vite --config vite.server.js",
         "build": "VITE_BUILD_FOR=server vite build --config vite.server.js",
-        "build:web": "VITE_BUILD_FOR=browser vite build --config vite.browser.js"
+        "build:browser": "VITE_BUILD_FOR=browser vite build --config vite.browser.js"
     },
     "dependencies": {
         "lakelib": "^0.4.0",
