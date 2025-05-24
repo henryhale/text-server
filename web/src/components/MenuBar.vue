@@ -22,9 +22,15 @@ const menu = {
         },
     },
     Help: {
+        "About": () => {
+            window.location.href = "https://github.com/henryhale/text-server#readme"
+        },
+        "Report Issue": () => {
+            window.location.href = "https://github.com/henryhale/text-server/issues"
+        },
         License: () => {
             window.location.href =
-                "https://github.com/henryhale/text-server#readme";
+                "https://github.com/henryhale/text-server/blob/master/LICENSE.txt";
         },
     },
 };
