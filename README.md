@@ -30,6 +30,15 @@ Why? I needed a local-first document editing tool in a single executable to allo
 - **Single Binary**: Simple installation with no dependencies
 - **Self-Hosted**: Run entirely on your own machine
 
+## Live Demo
+
+You can explore the project in action via the live demo link below:
+
+:rocket: [Live Demo](https://henryhale.github.io/text-server/)
+
+This demo showcases the core features and user interface of the application in real time. Use it to test functionality, review performance, or evaluate usability before integrating or contributing.
+While in use, your work will be saved locally in the browser's storage.
+
 ## Usage
 
 ### Command Line Options
