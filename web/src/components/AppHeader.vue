@@ -14,10 +14,10 @@ const buttons = [
 
 <template>
     <header
-        class="flex items-center select-none space-x-2 lg:space-x-4 border-b pl-3 pr-4"
+        class="flex items-center select-none space-x-2 lg:space-x-4 border-b px-2 sm:pr-4"
     >
         <div>
-            <img src="/favicon.svg" class="size-4 md:size-6" />
+            <img src="/favicon.svg" class="size-8" />
         </div>
 
         <MenuBar />

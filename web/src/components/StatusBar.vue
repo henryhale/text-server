@@ -21,11 +21,11 @@ onBeforeUnmount(() => clearInterval(lastID))
 </script>
 
 <template>
-    <div class="py-1 px-2 border-t flex items-center space-x-2 text-sm">
+    <div class="py-1 px-2 border-t flex items-center space-x-2 text-xs font-bold uppercase">
+        <div class="flex-grow opacity-70">Status: {{ online ? "Online" : "Offline" }}</div>
         <div>
             <span class="status" :class="online ? 'online': 'offline'"></span>
         </div>
-        <div class="flex-grow text-ellipsis">Status: {{ online ? "Online" : "Offline" }}</div>
     </div>
 </template>
 

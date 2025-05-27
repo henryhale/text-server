@@ -182,16 +182,17 @@ function deleteItem() {
                 :class="{ 'group-hover:flex': !local.renaming }"
                 class="hidden absolute right-0 top-0 bottom-0 items-center space-x-1 px-2"
             >
-                <button v-if="item.dir" @click.stop="showNewFileForm">
+                <button v-if="item.dir" @click.stop="showNewFileForm" title="New File">
                     <FilePlusIcon class="size-4" />
                 </button>
                 <button
                     v-if="props.item.path !== ''"
                     @click.stop="showRenameForm"
+                    title="Rename File"
                 >
                     <PencilIcon class="size-4" />
                 </button>
-                <button v-if="props.item.path !== ''" @click.stop="deleteItem">
+                <button v-if="props.item.path !== ''" @click.stop="deleteItem" title="Delete File">
                     <TrashIcon class="size-4" />
                 </button>
             </div>
