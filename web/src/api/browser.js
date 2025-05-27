@@ -12,7 +12,7 @@ const storage = createStorage({
 storage.getKeys().then((keys) => {
     if (!keys.length) {
         storage.setItem(
-            "sample.txt",
+            "hello-world",
             "<p><b>Hello World!</b></p><p>This is a sample document.</p><focus />",
         );
     }
@@ -44,7 +44,7 @@ async function writeFile(path, content) {
 
 async function createFile(path, name) {
     if (!name) return;
-    const file = path + ":" + name;
+    const file = `${path}:${name}${name.indexOf(".") > 0 ? "" : ".html"}`;
     const exists = await storage.hasItem(file);
     if (!exists) await writeFile(file, "");
     else throw "File already exists.";

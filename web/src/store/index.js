@@ -63,6 +63,18 @@ export const useState = defineStore("state", () => {
         }, lastSave.debounceTime);
     }
 
+    function exportDocument() {
+        if (!file.path) {
+            log.info("select a file to print.")
+            return
+        };
+        const printWindow = document.open("", "", "width=800,height=600");
+        printWindow.document.write(`<html><head><title>${file.name}</title></head>`);
+        printWindow.document.write(`<body>${file.content}</body></html>`);
+        printWindow.document.close();
+        printWindow.print();
+    }
+
     return {
         app,
         file,
@@ -70,5 +82,6 @@ export const useState = defineStore("state", () => {
         refreshExplorer,
         setCurrentFile,
         saveCurrentFile,
+        exportDocument
     };
 });

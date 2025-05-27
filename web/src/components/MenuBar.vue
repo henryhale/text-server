@@ -14,7 +14,13 @@ const state = useState();
 
 const menu = {
     File: {
-        Save: () => {},
+        // Save: () => {},
+        Print: () => {
+            state.exportDocument()
+        },
+        "Export as PDF": () => {
+            state.exportDocument()
+        },
     },
     Session: {
         Logout: () => {
