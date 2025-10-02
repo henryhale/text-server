@@ -45,7 +45,7 @@ export const useState = defineStore("state", () => {
     const lastSave = {
         id: undefined,
         path: null,
-        debounceTime: 500,
+        debounceTime: 300,
     };
     function saveCurrentFile(content) {
         const filePath = file.path;
