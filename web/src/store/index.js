@@ -68,11 +68,7 @@ export const useState = defineStore("state", () => {
             log.info("select a file to print.")
             return
         };
-        const printWindow = document.open("", "", "width=800,height=600");
-        printWindow.document.write(`<html><head><title>${file.name}</title></head>`);
-        printWindow.document.write(`<body>${file.content}</body></html>`);
-        printWindow.document.close();
-        printWindow.print();
+        window.print()
     }
 
     return {

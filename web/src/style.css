@@ -8,6 +8,36 @@ input {
 }
 
 button {
-    @apply py-1 px-1.5 opacity-80 hover:opacity-100 transition-all rounded hover:bg-slate-200
-    focus:bg-slate-200 focus:ring-slate-300 focus:ring-1;
+    @apply py-1 px-1.5 opacity-80 hover:opacity-100 transition-all rounded hover:bg-slate-200 focus:bg-slate-200 focus:ring-slate-300 focus:ring-1;
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    body {
+        position: relative;
+    }
+
+    header,
+    .lake-toolbar,
+    #splitter-group-1-panel-1 {
+        display: none !important;
+    }
+
+    .lake-container-wrapper,
+    .lake-container-wrapper * {
+        visibility: visible;
+    }
+
+    .lake-container-wrapper {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+
+        page-break-before: always;
+        page-break-after: always;
+    }
 }
