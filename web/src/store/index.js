@@ -47,6 +47,7 @@ export const useState = defineStore("state", () => {
         path: null,
         debounceTime: 300,
     };
+
     function saveCurrentFile(content) {
         const filePath = file.path;
         if (lastSave.id && lastSave.path === filePath) {
@@ -65,10 +66,10 @@ export const useState = defineStore("state", () => {
 
     function exportDocument() {
         if (!file.path) {
-            log.info("select a file to print.")
-            return
-        };
-        window.print()
+            log.info("select a file to print.");
+            return;
+        }
+        window.print();
     }
 
     return {
@@ -78,6 +79,6 @@ export const useState = defineStore("state", () => {
         refreshExplorer,
         setCurrentFile,
         saveCurrentFile,
-        exportDocument
+        exportDocument,
     };
 });

@@ -13,7 +13,7 @@ storage.getKeys().then((keys) => {
     if (!keys.length) {
         storage.setItem(
             "hello-world",
-            "<p><b>Hello World!</b></p><p>This is a sample document.</p><focus />",
+            "<p><b>Hello World!</b></p><p>This is a sample document.</p><focus />"
         );
     }
 });
@@ -61,7 +61,7 @@ async function renameFile(path, name) {
 }
 
 async function getHealth() {
-    return await Promise.resolve({ content: "OK" })
+    return await Promise.resolve({ content: "OK" });
 }
 
 export default {

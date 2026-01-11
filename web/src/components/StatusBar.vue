@@ -1,30 +1,36 @@
 <script setup>
-import api from "../api"
-import { ref, onMounted, onBeforeUnmount } from "vue"
+import api from "../api";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
-const online = ref(true)
+const online = ref(true);
 
-let lastID = undefined
+let lastID = undefined;
 
 // check 4 times in a minute
-const duration = 15 * 1000
+const duration = 15 * 1000;
 
 onMounted(() => {
     lastID = setInterval(() => {
-        api.getHealth().then(res => {
-            online.value = res.content == "OK"
-        }).catch(() => (online.value = false))
+        api.getHealth()
+            .then((res) => {
+                online.value = res.content == "OK";
+            })
+            .catch(() => (online.value = false));
     }, duration);
-})
+});
 
-onBeforeUnmount(() => clearInterval(lastID))
+onBeforeUnmount(() => clearInterval(lastID));
 </script>
 
 <template>
-    <div class="py-1 px-2 border-t flex items-center space-x-2 text-xs font-bold uppercase">
-        <div class="flex-grow opacity-70">Status: {{ online ? "Online" : "Offline" }}</div>
+    <div
+        class="py-1 px-2 border-t flex items-center space-x-2 text-xs font-bold uppercase"
+    >
+        <div class="flex-grow opacity-70">
+            Status: {{ online ? "Online" : "Offline" }}
+        </div>
         <div>
-            <span class="status" :class="online ? 'online': 'offline'"></span>
+            <span class="status" :class="online ? 'online' : 'offline'"></span>
         </div>
     </div>
 </template>
@@ -48,18 +54,16 @@ onBeforeUnmount(() => clearInterval(lastID))
     width: 25px;
     height: 25px;
     border-radius: 50%;
-    animation: pulse 1.5s infinite ease-in;    
+    animation: pulse 1.5s infinite ease-in;
 }
 
 .status.online,
-.status.online:before
- {
+.status.online:before {
     @apply bg-green-300;
 }
 
 .status.offline,
-.status.offline:before
- {
+.status.offline:before {
     @apply bg-red-300;
 }
 

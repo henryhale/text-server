@@ -16,10 +16,10 @@ const menu = {
     File: {
         // Save: () => {},
         Print: () => {
-            state.exportDocument()
+            state.exportDocument();
         },
         "Export as PDF": () => {
-            state.exportDocument()
+            state.exportDocument();
         },
     },
     Session: {
@@ -28,11 +28,13 @@ const menu = {
         },
     },
     Help: {
-        "About": () => {
-            window.location.href = "https://github.com/henryhale/text-server#readme"
+        About: () => {
+            window.location.href =
+                "https://github.com/henryhale/text-server#readme";
         },
         "Report Issue": () => {
-            window.location.href = "https://github.com/henryhale/text-server/issues"
+            window.location.href =
+                "https://github.com/henryhale/text-server/issues";
         },
         License: () => {
             window.location.href =

@@ -14,7 +14,7 @@ const API_URL = `${window.location.origin}/api/file`;
 
 const apiRequest = (path, data) => {
     return new Promise((res, rej) => {
-        fetch(API_URL + path, {
+        fetch(path, {
             method: "POST",
             body: objToFormData(data),
         })
@@ -24,21 +24,24 @@ const apiRequest = (path, data) => {
     });
 };
 
-const getRootTree = () => apiRequest("/root");
+const getRootTree = () => apiRequest(`${API_URL}/root`);
 
-const readdir = (path) => apiRequest("/list", { path });
+const readdir = (path) => apiRequest(`${API_URL}/list`, { path });
 
-const readFile = (path) => apiRequest("/load", { path });
+const readFile = (path) => apiRequest(`${API_URL}/load`, { path });
 
-const writeFile = (path, content) => apiRequest("/save", { path, content });
+const writeFile = (path, content) =>
+    apiRequest(`${API_URL}/save`, { path, content });
 
-const createFile = (path, name) => apiRequest("/create", { path, name });
+const createFile = (path, name) =>
+    apiRequest(`${API_URL}/create`, { path, name });
 
-const removeFile = (path) => apiRequest("/remove", { path });
+const removeFile = (path) => apiRequest(`${API_URL}/remove`, { path });
 
-const renameFile = (path, name) => apiRequest("/rename", { path, name });
+const renameFile = (path, name) =>
+    apiRequest(`${API_URL}/rename`, { path, name });
 
-const getHealth = () => apiRequest("/health");
+const getHealth = () => apiRequest(`/healthcheck`);
 
 export default {
     IS_SERVER: true,
