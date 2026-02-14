@@ -9,6 +9,7 @@ import {
 } from "reka-ui";
 import { ArrowUpRightIcon } from "lucide-vue-next";
 import { useState } from "../store";
+import { convertElementToPDF } from "../utils/pdf";
 
 const state = useState();
 
@@ -19,7 +20,9 @@ const menu = {
             state.exportDocument();
         },
         "Export as PDF": () => {
-            state.exportDocument();
+            if (!state.file.name) return;
+            const container = document.querySelector(".lake-container");
+            convertElementToPDF(container, state.file.name);
         },
     },
     Session: {

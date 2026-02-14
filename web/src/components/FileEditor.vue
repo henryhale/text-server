@@ -42,6 +42,9 @@ onUnmounted(() => {
 
 <style>
 .lake-container {
-    @apply container max-w-5xl mx-auto min-h-[90vh] bg-white border p-4 md:px-[48px] md:py-[40px];
+    @apply container max-w-5xl mx-auto min-h-[90vh] bg-white p-4 md:px-[48px] md:py-[40px];
+}
+.lake-container-wrapper {
+    @apply border print:border-none;
 }
 </style>

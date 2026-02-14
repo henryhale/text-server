@@ -10,6 +10,7 @@
         "format": "prettier src --write"
     },
     "dependencies": {
+        "html2pdf.js": "^0.14.0",
         "lakelib": "^0.4.0",
         "lucide-vue-next": "^0.507.0",
         "pinia": "^3.0.2",
