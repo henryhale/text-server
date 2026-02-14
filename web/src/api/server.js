@@ -41,7 +41,7 @@ const removeFile = (path) => apiRequest(`${API_URL}/remove`, { path });
 const renameFile = (path, name) =>
     apiRequest(`${API_URL}/rename`, { path, name });
 
-const getHealth = () => apiRequest(`/healthcheck`);
+const getHealth = () => apiRequest(`/health`);
 
 export default {
     IS_SERVER: true,
